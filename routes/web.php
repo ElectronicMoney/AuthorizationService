@@ -13,8 +13,9 @@
 
 
 
-$router->group(['prefix' => 'v1'], function () use ($router) {
-    $router->post('users', 'UserController@store');
+$router->group(['prefix' => 'v1/auth'], function () use ($router) {
+    $router->post('/login', 'Auth\AuthController@login');
+    $router->post('/register', 'Auth\AuthController@register');
 });
 
 $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($router) {
