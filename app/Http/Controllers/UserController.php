@@ -5,12 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Traits\ApiResponser;
-
+use App\Traits\CafafansApiJsonResponse;
 
 class UserController extends Controller
 {
-    use ApiResponser;
+    use CafafansApiJsonResponse;
     /**
      * Create a new controller instance.
      *

@@ -1,23 +1,26 @@
 <?php
-namespace App\HttpRestApiClient;
-use App\Traits\HttpRestApiService;
 
-class  CafafansHttpRestApiClient
+namespace App\Traits;
+use GuzzleHttp\Client;
+
+trait CafafansRestApiClientService
 {
-    use HttpRestApiService;
     /**
-     * The baseUri to consume the authors service
-     * @var string
-     */
-    public $baseUri;
-
-    /**
-     * Creating a new User instance.
+     * Send a request to any service
      *
-     * @return void
+     * @param  string|array $data
+     * @param int $code
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function __construct($uri) {
-        $this->baseUri = $uri;
+    public function httpRequest($method, $requestUrl, $formParams = [], $headers = []) {
+        //Instantiate the GazzleHttp Client
+        $client = new Client([
+            'base_uri' => $this->baseUri,
+        ]);
+        //Send the request
+        $response = $client->request($method, $requestUrl, ['form_params' => $formParams, 'headers' => $headers]);
+        //Return a response
+        return $response;
     }
 
     /**

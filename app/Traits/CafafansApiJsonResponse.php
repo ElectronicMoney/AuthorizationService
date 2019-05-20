@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\Response;
 
-trait ApiResponser
+trait CafafansApiJsonResponse
 {
     /**
      * Return Success JsonResponse
