@@ -1,10 +1,12 @@
 <?php
 namespace App\Services;
 
-use App\HttpRestApiClient\CafafansHttpRestApiClient;
+use App\Traits\CafafansApiJsonResponse;
 
-class  ExampleService extends CafafansHttpRestApiClient
+class  ExampleService
 {
+    use CafafansApiJsonResponse;
+
     /**
      * The baseUri to consume the authors service
      * @var string
