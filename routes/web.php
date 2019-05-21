@@ -11,8 +11,6 @@
 |
 */
 
-
-
 $router->group(['prefix' => 'v1/auth'], function () use ($router) {
     $router->post('/login', 'Auth\AuthController@login');
     $router->post('/register', 'Auth\AuthController@register');

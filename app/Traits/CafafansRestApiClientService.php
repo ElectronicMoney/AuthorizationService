@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Traits;
+
 use GuzzleHttp\Client;
+
 
 trait CafafansRestApiClientService
 {
@@ -12,13 +14,15 @@ trait CafafansRestApiClientService
      * @param int $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public function httpRequest($method, $requestUrl, $formParams = [], $headers = []) {
+    public function httpRequest($method, $path, $formParams = [], $headers = []) {
         //Instantiate the GazzleHttp Client
         $client = new Client([
             'base_uri' => $this->baseUri,
+            'timeout' => 5.0,
         ]);
-        //Send the request
-        $response = $client->request($method, $requestUrl, ['form_params' => $formParams, 'headers' => $headers]);
+ 
+        //Create a request
+        $response = $client->request($method, $path, ['form_params' => $formParams, 'headers' => $headers]);
         //Return a response
         return $response;
     }

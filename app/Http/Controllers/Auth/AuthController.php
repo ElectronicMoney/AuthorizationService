@@ -8,10 +8,16 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Traits\CafafansApiJsonResponse;
+use App\Traits\CafafansRestApiClientService;
 
 class AuthController extends Controller
 {
-    use CafafansApiJsonResponse;
+    use CafafansApiJsonResponse, CafafansRestApiClientService;
+
+    private $baseUri;
+    private $grantType;
+    private $clientId;
+    private $clientSecret;
 
     /**
      * Create a new controller instance.
@@ -19,10 +25,14 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct() {
-        //
+        // $this->grantType     = env('auth.credentials.grant_type');
+        // $this->clientId      = env('auth.credentials.client_id');
+        // $this->clientSecret  = env('auth.credentials.client_secret');
+        $this->baseUri       = 'http://127.0.0.1:8081';
+        $this->grantType     = 'password';
+        $this->clientId      = 2;
+        $this->clientSecret  = 'tOOPU73brhrDpqCZxYWVWtxT2pMyazJ8UAImP1T2';
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -32,7 +42,6 @@ class AuthController extends Controller
      */
     public function login(Request $request) {
 
-        return "Login";
         //The rules
         $rules = [
             'username' => 'required|max:255',
@@ -46,7 +55,20 @@ class AuthController extends Controller
         $user->username = $request->input('username');
         $user->password = $request->input('password');
 
+        $data = [
+            'grant_type'    => $this->grantType ,
+            'client_id'     => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'username' => $user->username,
+            'password' => $user->password,
+        ];
+        return $data;
 
+        //Make http request
+
+        $response = $this->httpRequest('POST', '/test', $data);
+
+        return $response;
 
     }
 
