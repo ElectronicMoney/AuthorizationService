@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Traits\CafafansApiJsonResponse;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     use CafafansApiJsonResponse;
 
@@ -28,10 +28,6 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        //Check if the Autthenticated userId is the same as userId
-        if (Auth::user()->role->name !== 'Administrator') {
-            return $this->errorResponse('Unauthorized.', Response::HTTP_UNAUTHORIZED);
-        }
         $users = User::all();
         return $this->successResponse($users);
     }
@@ -47,8 +43,9 @@ class UserController extends Controller
         $rules = [
             'name'     => 'required|max:255',
             'username' => 'required|max:255',
-            'email'    => 'required|max:255',
+            'email'    => 'required|email|max:255',
             'password' => 'required|max:255',
+            'password_confirmation' => 'confirmed|max:255',
         ];
         //validate the request
        $this->validate($request, $rules);
@@ -57,7 +54,7 @@ class UserController extends Controller
         $user->name     = $request->input('name');
         $user->username = $request->input('username');
         $user->email    = $request->input('email');
-          $user->password     = $request->input('password');
+        $user->password     = $request->input('password');
         //Save the user
         $user->save();
         //Return the new user
@@ -74,10 +71,6 @@ class UserController extends Controller
     public function show($userId) {
         //get user with the given userId
         $user = User::findOrFail($userId);
-        //Check if the Autthenticated userId is the same as userId
-        if (Auth::user()->id !== $user->id) {
-            return $this->errorResponse('Unauthorized.', Response::HTTP_UNAUTHORIZED);
-        }
         return $this->successResponse($user);
     }
 
@@ -93,18 +86,15 @@ class UserController extends Controller
         $rules = [
             'name'     => 'max:255',
             'username' => 'max:255',
-            'email'    => 'max:255',
+            'email'    => 'email|max:255',
             'password' => 'max:255',
+            'password_confirmation' => 'confirmed|max:255',
         ];
         //validate the request
        $this->validate($request, $rules);
 
         //get user with the given userId
         $user = User::findOrFail($userId);
-        //Check if the Autthenticated userId is the same as userId
-        if (Auth::user()->id !== $user->id) {
-            return $this->errorResponse('Unauthorized.', Response::HTTP_UNAUTHORIZED);
-        }
 
         //Check if the request has name
         if ($request->has('name')) {
@@ -143,11 +133,6 @@ class UserController extends Controller
     public function destroy($userId) {
         //get user with the given userId
         $user = User::findOrFail($userId);
-        //Check if the Autthenticated userId is the same as userId
-        if (Auth::user()->id !== $user->id) {
-            return $this->errorResponse('Unauthorized.', Response::HTTP_UNAUTHORIZED);
-        }
-
         $user->delete();
         //Return the new user
         return $this->successResponse($user);

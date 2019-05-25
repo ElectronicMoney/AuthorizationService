@@ -11,17 +11,13 @@
 |
 */
 
-$router->group(['prefix' => 'v1/auth'], function () use ($router) {
-    $router->post('/login', 'Auth\AuthController@login');
-    $router->post('/register', 'Auth\AuthController@register');
-});
-
 $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function () use ($router) {
-    $router->get('/users', 'UserController@index');
-    $router->get('/users/{user}', 'UserController@show');
-    $router->put('/users/{user}', 'UserController@update');
-    $router->patch('/users/{user}', 'UserController@update');
-    $router->delete('/users/{user}', 'UserController@destroy');
+    $router->post('/admins', 'AdminController@store');
+    $router->get('/admins', 'AdminController@index');
+    $router->get('/admins/{admin}', 'AdminController@show');
+    $router->put('/admins/{admin}', 'AdminController@update');
+    $router->patch('/admins/{admin}', 'AdminController@update');
+    $router->delete('/admins/{admin}', 'AdminController@destroy');
 });
 
 
